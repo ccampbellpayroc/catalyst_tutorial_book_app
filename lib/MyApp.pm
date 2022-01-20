@@ -17,11 +17,11 @@ use Catalyst::Runtime 5.80;
 #                 directory
 
 use Catalyst qw/
-  -Debug
-  ConfigLoader
-  Static::Simple
-  StackTrace
-  /;
+-Debug
+ConfigLoader
+Static::Simple
+StackTrace
+/;
 
 extends 'Catalyst';
 
@@ -37,12 +37,24 @@ our $VERSION = '0.01';
 # local deployment.
 
 __PACKAGE__->config(
-    name => 'MyApp',
+	name => 'MyApp',
 
-    # Disable deprecated behavior needed by old applications
-    disable_component_resolution_regex_fallback => 1,
-    enable_catalyst_header                      => 1,   # Send X-Catalyst header
-    encoding => 'UTF-8',    # Setup request decoding and response encoding
+	# Disable deprecated behavior needed by old applications
+	disable_component_resolution_regex_fallback => 1,
+	enable_catalyst_header => 1,    # Send X-Catalyst header
+	encoding => 'UTF-8',    # Setup request decoding and response encoding
+);
+
+__PACKAGE__->config(
+
+	# Configure the view
+	'View::HTML' => {
+
+		#Set the location for TT files
+		INCLUDE_PATH => [
+			__PACKAGE__->path_to('root', 'src'),
+		],
+	},
 );
 
 # Start the application
