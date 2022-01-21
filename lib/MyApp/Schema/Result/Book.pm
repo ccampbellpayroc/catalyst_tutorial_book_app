@@ -1,4 +1,5 @@
 use utf8;
+
 package MyApp::Schema::Result::Book;
 
 # Created by DBIx::Class::Schema::Loader
@@ -59,20 +60,41 @@ __PACKAGE__->table("books");
   data_type: 'integer'
   is_nullable: 1
 
+=head2 created
+
+  data_type: 'timestamp'
+  default_value: current_timestamp
+  is_nullable: 0
+  original: {default_value => \"now()"}
+
+=head2 updated
+
+  data_type: 'timestamp'
+  is_nullable: 1
+
 =cut
 
 __PACKAGE__->add_columns(
-  "id",
-  {
-    data_type         => "integer",
-    is_auto_increment => 1,
-    is_nullable       => 0,
-    sequence          => "books_id_seq",
-  },
-  "title",
-  { data_type => "text", is_nullable => 1 },
-  "rating",
-  { data_type => "integer", is_nullable => 1 },
+	"id",
+	{
+		data_type => "integer",
+		is_auto_increment => 1,
+		is_nullable => 0,
+		sequence => "books_id_seq",
+	},
+	"title",
+	{ data_type => "text", is_nullable => 1 },
+	"rating",
+	{ data_type => "integer", is_nullable => 1 },
+	"created",
+	{
+		data_type => "timestamp",
+		default_value => \"current_timestamp",
+		is_nullable => 0,
+		original => { default_value => \"now()" },
+	},
+	"updated",
+	{ data_type => "timestamp", is_nullable => 1 },
 );
 
 =head1 PRIMARY KEY
@@ -98,10 +120,10 @@ Related object: L<MyApp::Schema::Result::BookAuthor>
 =cut
 
 __PACKAGE__->has_many(
-  "book_authors",
-  "MyApp::Schema::Result::BookAuthor",
-  { "foreign.book_id" => "self.id" },
-  { cascade_copy => 0, cascade_delete => 0 },
+	"book_authors",
+	"MyApp::Schema::Result::BookAuthor",
+	{ "foreign.book_id" => "self.id" },
+	{ cascade_copy => 0, cascade_delete => 0 },
 );
 
 =head2 authors
@@ -114,10 +136,18 @@ Composing rels: L</book_authors> -> author
 
 __PACKAGE__->many_to_many("authors", "book_authors", "author");
 
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-01-21 12:08:34
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:gTqNYMOWScspGiqQx/7DbA
 
-# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-01-21 10:41:01
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:Jz0CkMM57lMhyQvAxhMXNw
-
+#
+# Enable automatic date handling
+#
+__PACKAGE__->add_columns(
+	"created",
+	{ data_type => 'timestamp', set_on_create => 1 },
+	"updated",
+	{ data_type => 'timestamp', set_on_create => 1, set_on_update => 1 },
+);
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
 __PACKAGE__->meta->make_immutable;
