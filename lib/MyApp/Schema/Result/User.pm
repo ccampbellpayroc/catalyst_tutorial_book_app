@@ -1,12 +1,12 @@
 use utf8;
-package MyApp::Schema::Result::Author;
+package MyApp::Schema::Result::User;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
 
 =head1 NAME
 
-MyApp::Schema::Result::Author
+MyApp::Schema::Result::User
 
 =cut
 
@@ -34,11 +34,11 @@ extends 'DBIx::Class::Core';
 
 __PACKAGE__->load_components("InflateColumn::DateTime", "TimeStamp", "PassphraseColumn");
 
-=head1 TABLE: C<authors>
+=head1 TABLE: C<users>
 
 =cut
 
-__PACKAGE__->table("authors");
+__PACKAGE__->table("users");
 
 =head1 ACCESSORS
 
@@ -47,7 +47,22 @@ __PACKAGE__->table("authors");
   data_type: 'integer'
   is_auto_increment: 1
   is_nullable: 0
-  sequence: 'authors_id_seq'
+  sequence: 'users_id_seq'
+
+=head2 username
+
+  data_type: 'text'
+  is_nullable: 1
+
+=head2 password
+
+  data_type: 'text'
+  is_nullable: 1
+
+=head2 email_address
+
+  data_type: 'text'
+  is_nullable: 1
 
 =head2 first_name
 
@@ -59,6 +74,11 @@ __PACKAGE__->table("authors");
   data_type: 'text'
   is_nullable: 1
 
+=head2 active
+
+  data_type: 'integer'
+  is_nullable: 1
+
 =cut
 
 __PACKAGE__->add_columns(
@@ -67,12 +87,20 @@ __PACKAGE__->add_columns(
     data_type         => "integer",
     is_auto_increment => 1,
     is_nullable       => 0,
-    sequence          => "authors_id_seq",
+    sequence          => "users_id_seq",
   },
+  "username",
+  { data_type => "text", is_nullable => 1 },
+  "password",
+  { data_type => "text", is_nullable => 1 },
+  "email_address",
+  { data_type => "text", is_nullable => 1 },
   "first_name",
   { data_type => "text", is_nullable => 1 },
   "last_name",
   { data_type => "text", is_nullable => 1 },
+  "active",
+  { data_type => "integer", is_nullable => 1 },
 );
 
 =head1 PRIMARY KEY
@@ -89,43 +117,35 @@ __PACKAGE__->set_primary_key("id");
 
 =head1 RELATIONS
 
-=head2 book_authors
+=head2 user_roles
 
 Type: has_many
 
-Related object: L<MyApp::Schema::Result::BookAuthor>
+Related object: L<MyApp::Schema::Result::UserRole>
 
 =cut
 
 __PACKAGE__->has_many(
-  "book_authors",
-  "MyApp::Schema::Result::BookAuthor",
-  { "foreign.author_id" => "self.id" },
+  "user_roles",
+  "MyApp::Schema::Result::UserRole",
+  { "foreign.user_id" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
-=head2 books
+=head2 roles
 
 Type: many_to_many
 
-Composing rels: L</book_authors> -> book
+Composing rels: L</user_roles> -> role
 
 =cut
 
-__PACKAGE__->many_to_many("books", "book_authors", "book");
+__PACKAGE__->many_to_many("roles", "user_roles", "role");
 
 
-# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-01-21 10:41:01
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:XKR3V+JjHq3xHq0A94kGUA
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-01-21 15:07:37
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:Ihcs2judZe1zNusKs32QRA
 
-#
-# Row-level helper methods
-#
-sub full_name {
-	my ($self) = @_;
-
-	return $self->first_name.' '.$self->last_name;
-}
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
 __PACKAGE__->meta->make_immutable;

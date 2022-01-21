@@ -1,5 +1,4 @@
 use utf8;
-
 package MyApp::Schema::Result::Book;
 
 # Created by DBIx::Class::Schema::Loader
@@ -75,26 +74,26 @@ __PACKAGE__->table("books");
 =cut
 
 __PACKAGE__->add_columns(
-	"id",
-	{
-		data_type => "integer",
-		is_auto_increment => 1,
-		is_nullable => 0,
-		sequence => "books_id_seq",
-	},
-	"title",
-	{ data_type => "text", is_nullable => 1 },
-	"rating",
-	{ data_type => "integer", is_nullable => 1 },
-	"created",
-	{
-		data_type => "timestamp",
-		default_value => \"current_timestamp",
-		is_nullable => 0,
-		original => { default_value => \"now()" },
-	},
-	"updated",
-	{ data_type => "timestamp", is_nullable => 1 },
+  "id",
+  {
+    data_type         => "integer",
+    is_auto_increment => 1,
+    is_nullable       => 0,
+    sequence          => "books_id_seq",
+  },
+  "title",
+  { data_type => "text", is_nullable => 1 },
+  "rating",
+  { data_type => "integer", is_nullable => 1 },
+  "created",
+  {
+    data_type     => "timestamp",
+    default_value => \"current_timestamp",
+    is_nullable   => 0,
+    original      => { default_value => \"now()" },
+  },
+  "updated",
+  { data_type => "timestamp", is_nullable => 1 },
 );
 
 =head1 PRIMARY KEY
@@ -120,10 +119,10 @@ Related object: L<MyApp::Schema::Result::BookAuthor>
 =cut
 
 __PACKAGE__->has_many(
-	"book_authors",
-	"MyApp::Schema::Result::BookAuthor",
-	{ "foreign.book_id" => "self.id" },
-	{ cascade_copy => 0, cascade_delete => 0 },
+  "book_authors",
+  "MyApp::Schema::Result::BookAuthor",
+  { "foreign.book_id" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
 );
 
 =head2 authors
@@ -135,6 +134,7 @@ Composing rels: L</book_authors> -> author
 =cut
 
 __PACKAGE__->many_to_many("authors", "book_authors", "author");
+
 
 # Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-01-21 12:08:34
 # DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:gTqNYMOWScspGiqQx/7DbA
