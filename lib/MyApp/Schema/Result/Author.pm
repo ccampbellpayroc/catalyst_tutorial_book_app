@@ -1,4 +1,5 @@
 use utf8;
+
 package MyApp::Schema::Result::Author;
 
 # Created by DBIx::Class::Schema::Loader
@@ -62,17 +63,17 @@ __PACKAGE__->table("authors");
 =cut
 
 __PACKAGE__->add_columns(
-  "id",
-  {
-    data_type         => "integer",
-    is_auto_increment => 1,
-    is_nullable       => 0,
-    sequence          => "authors_id_seq",
-  },
-  "first_name",
-  { data_type => "text", is_nullable => 1 },
-  "last_name",
-  { data_type => "text", is_nullable => 1 },
+	"id",
+	{
+		data_type => "integer",
+		is_auto_increment => 1,
+		is_nullable => 0,
+		sequence => "authors_id_seq",
+	},
+	"first_name",
+	{ data_type => "text", is_nullable => 1 },
+	"last_name",
+	{ data_type => "text", is_nullable => 1 },
 );
 
 =head1 PRIMARY KEY
@@ -98,10 +99,10 @@ Related object: L<MyApp::Schema::Result::BookAuthor>
 =cut
 
 __PACKAGE__->has_many(
-  "book_authors",
-  "MyApp::Schema::Result::BookAuthor",
-  { "foreign.author_id" => "self.id" },
-  { cascade_copy => 0, cascade_delete => 0 },
+	"book_authors",
+	"MyApp::Schema::Result::BookAuthor",
+	{ "foreign.author_id" => "self.id" },
+	{ cascade_copy => 0, cascade_delete => 0 },
 );
 
 =head2 books
@@ -114,10 +115,17 @@ Composing rels: L</book_authors> -> book
 
 __PACKAGE__->many_to_many("books", "book_authors", "book");
 
-
 # Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-01-21 10:41:01
 # DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:XKR3V+JjHq3xHq0A94kGUA
 
+#
+# Row-level helper methods
+#
+sub full_name {
+	my ($self) = @_;
+
+	return $self->first_name.' '.$self->last_name;
+}
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
 __PACKAGE__->meta->make_immutable;
