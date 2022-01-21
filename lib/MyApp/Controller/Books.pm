@@ -231,20 +231,14 @@ sub delete : Chained('object') : PathPart('delete') : Args(0) {
 	my ($self, $c) = @_;
 
 	# Use the book object saved by 'object' and delete it along
-	# with related 'book_author' entries
+	# with related 'book_authors' entries
 	$c->stash->{object}->delete;
 
-	# Set a status message to be displayed at the top of the view
-	$c->stash->{status_msg} = "Book deleted.";
+	# Use 'flash' to save information across requests until it's read
+	$c->flash->{status_msg} = "Book deleted";
 
-	# Redirect the user back to the list page.  Note the use
-	# of $self->action_for as earlier in this section (BasicCRUD)
-	$c->response->redirect(
-		$c->uri_for(
-			$self->action_for('list'),
-			{ status_msg => "Book deleted." }
-		)
-	);
+	# Redirect the user back to the list page
+	$c->response->redirect($c->uri_for($self->action_for('list')));
 }
 
 =encoding utf8
