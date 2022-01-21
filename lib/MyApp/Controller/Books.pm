@@ -198,7 +198,12 @@ sub delete : Chained('object') : PathPart('delete') : Args(0) {
 
 	# Redirect the user back to the list page.  Note the use
 	# of $self->action_for as earlier in this section (BasicCRUD)
-	$c->response->redirect($c->uri_for($self->action_for('list')));
+	$c->response->redirect(
+		$c->uri_for(
+			$self->action_for('list'),
+			{ status_msg => "Book deleted." }
+		)
+	);
 }
 
 =encoding utf8
