@@ -22,6 +22,7 @@ ConfigLoader
 Static::Simple
 StackTrace
 Authentication
+Authorization::Roles
 Session
 Session::Store::File
 Session::State::Cookie

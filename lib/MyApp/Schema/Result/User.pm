@@ -146,6 +146,20 @@ __PACKAGE__->many_to_many("roles", "user_roles", "role");
 # Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-01-21 15:07:37
 # DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:Ihcs2judZe1zNusKs32QRA
 
+=head2 has_role
+ 
+Check if a user has the specified role
+ 
+=cut
+ 
+use Perl6::Junction qw/any/;
+sub has_role {
+    my ($self, $role) = @_;
+ 
+    # Does this user posses the required role?
+    return any(map { $_->role } $self->roles) eq $role;
+}
+
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
 __PACKAGE__->meta->make_immutable;
