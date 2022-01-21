@@ -125,7 +125,7 @@ sub list_recent_tcp : Chained('base') : PathPart('list_recent_tcp') : Args(1) {
 	# stash where they can be accessed by the TT template, but only
 	# retrieve books created within the last $min number of minutes
 	# AND that have 'TCP' in the title
-	$c->stash(books => [$c->model('DB::Book')->created_after(DateTime->now->subtract(minutes => $mins))->search({ title => { 'like', '%TCP%' } })]);
+	$c->stash(books => [$c->model('DB::Book')->created_after(DateTime->now->subtract(minutes => $mins))->title_like('TCP')]);
 
 	# Set the TT template to use.  You will almost always want to do this
 	# in your action methods (action methods respond to user input in
